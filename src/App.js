@@ -1,20 +1,34 @@
 import React from 'react';
-import './App.css'; 
-import Login from './login'; 
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; 
 import Home from './home';
-import partDetail from './partDetail'
+import Login from  './login';
+import './App.css';
+import PartDetail from './partDetail';
+import { IntlProvider } from 'react-intl';
+
+import messages_es from './es.json';
+import messages_en from './en.json';
 
 function App() {
+  const locale = navigator.language; 
+  const messages = locale === 'es-ES' || locale === 'es' ? messages_es : messages_en;
+
   return (
+    <IntlProvider locale={locale} messages={messages}>
+    <Router>
     <div className="App">
-      <header className="App-header">
+    <header className="App-header">
         <h1>Aplicación de Inicio de Sesión</h1>
       </header>
-      <main>
-        <Login /> {}
-      </main>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/car/:carModel" element={<PartDetail />} /> 
+      </Routes>
     </div>
+    </Router>
+    </IntlProvider>
   );
 }
 
-export default App;
+export default App;
